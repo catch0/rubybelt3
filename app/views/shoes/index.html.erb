@@ -1,0 +1,35 @@
+<h1>Sup, <%= @user.first_name %> !!!!</h1>
+<a href="/users/<%= @user.id %>">Go to Dashboard</a>
+<a href="/logout">Log Out</a>
+
+<h3>All Products</h3>
+<table>
+  <tr>
+    <th>Product</th>
+    <th>Seller</th>
+    <th>Date Posted</th>
+    <th>Amount</th>
+    <th>Action</th>
+  </tr>
+  <% @shoes.each do |s| %>
+  <tr>
+    <td><%= s.name %></td>
+    <td><%= s.user.first_name %> <%= s.user.last_name %></td>
+    <td><%= s.created_at.strftime("%B %d, %Y") %></td>
+    <td><%= number_to_currency(s.amount, :unit => "$") %></td>
+    <td>
+      <% if s.user_id == session[:user_id] %>
+            <form action ="/delete/<%=s.id%>" method="post">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <input type="submit" value="remove">
+            </form>
+    <% else %>
+           <form action="/shoes/<%= s.id %>" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="submit" value="Buy">
+      </form>
+        <% end %>
+    </td>
+  </tr>
+  <% end %>
+</table>
