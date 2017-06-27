@@ -1,7 +1,7 @@
 class ShoesController < ApplicationController
      def index
         @user = User.find(session[:user_id])
-        @shoes = Shoe.where.not(purchased:true)
+        @shoes = Shoe.where.not(purchased:true, user: session[:user_id]) 
     end
      
     def new
